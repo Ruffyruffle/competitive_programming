@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+
+#define MEM(a, b) memset(a, (b), sizeof(a))
+#define PI 3.1415926535897932384626433832795
+#define endl '\n'
+#define exists(s, e) (s.find(e)!=s.end())
+#define WHILE(n)
+typedef long long ll;
+typedef long double ld;
+
+const int INF = 0x3f3f3f3f;
+#define MAXN 500001
+using namespace std;
+int n;
+vector <int> tr[MAXN];
+bool visited[MAXN];
+int lfRoot[MAXN];
+bool inLongest[MAXN], inLongest2[MAXN];
+vector<int> longestPath;
+vector<int> longestPath2;
+int long1, long2;
+int longestChild[MAXN];
+
+//longest route + 2nd longest
+void dfs(int cur, int big, int node,vector<int> route){
+    route.push_back(cur);
+    visited[cur] = true;
+    big++;
+    if(big > long1){
+      if(longestPath.size() > 1){
+        if(longestPath[1] != route[1]){
+          long2 = long1;
+          long1 = big;
+          longestPath2 = longestPath;
+          longestPath = route;
+          
+        }
+        else{
+          long1 = big;
+          longestPath = route;
+          cout<<route.size();
+        }
+      }
+      else{
+          long2 = long1;
+          long1 = big;
+          longestPath2 = longestPath;
+          longestPath = route;
+      }
+    }
+    //cout<<"a"<<tr[cur].size()<<"a";
+    for(int i = 0; i<tr[cur].size();i++){
+        int x = tr[cur][i];
+        if (!visited[x])
+            dfs(x, big, node, route);
+    }
+}
+void inPath(){
+    for (int i = 0; i < longestPath.size(); i++){
+      inLongest[i] = true;
+    }
+      for (int i = 0; i < longestPath2.size(); i++){
+      inLongest2[i] = true;
+    }
+}
+void rootLengths(int cur, int length){
+    visited[cur] = true;
+    length++;
+    lfRoot[cur] = length;
+    for(int i = 0; i<tr[cur].size();i++){
+        int x = tr[cur][i];
+        if (!visited[x])
+            rootLengths(x, length);      
+    } 
+}
+int main(){
+    cin.sync_with_stdio(0);
+    cin.tie(0);
+    int a,b;
+    cin>>n;
+    MEM(inLongest, false);
+    MEM(inLongest2, false); 
+    MEM(longestChild, 0);      
+    for (int i =0; i < n-1; i++){
+        cin>>a>>b;
+        tr[a].push_back(b);
+        tr[b].push_back(a);
+    }
+    int w = 0;
+    int o = 1;
+    MEM(visited, false);
+    vector<int> vec;
+    dfs(o,w,o,vec);
+    MEM(visited, false);
+    inPath();
+
+    rootLengths(o, 0);
+    if (long2 == 1)
+      long2 = 0;
+    cout<<long1<<endl;
+    for(int i = 2; i < n+1; i++){
+      if(inLongest[i]){
+        cout<<"a";
+        cout<<max(lfRoot[i] + long2-1, longestChild[i])<<endl;
+      }
+      else{
+        cout<<max(lfRoot[i] + long1-1, longestChild[i])<<endl;
+      }
+    }
+}  
