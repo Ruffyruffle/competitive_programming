@@ -15,22 +15,24 @@ typedef long long ll;
 typedef long double ld;
 
 const int INF = 0x3f3f3f3f;
-#define MAXN 1000000
+#define MAXN 100
 using namespace std;
-int n;
+int n,k;
 
 int main(){
     cin.sync_with_stdio(0);
     cin.tie(0);
-    cin>>n;
-    for (int i =0; i < n; i++){
-
-
-
+    cin>>n>>k;
+    int a[n+1];
+    a[0] = 0;
+    for(int i = 1; i < n+1; i++){
+        cin>>a[i];
     }
-
-
-
-
-
+    for (int i =1; i < n+1; i++){
+        if ((abs(a[i] - i) % k) !=0){
+            cout<<"NO";
+            return 0;
+        }
+    }
+    cout<<"YES";
 }

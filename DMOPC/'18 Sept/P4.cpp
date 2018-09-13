@@ -17,17 +17,26 @@ typedef long double ld;
 const int INF = 0x3f3f3f3f;
 #define MAXN 1000000
 using namespace std;
-int n;
+int n,m,k,x;
+
 
 int main(){
     cin.sync_with_stdio(0);
     cin.tie(0);
-    cin>>n;
-    for (int i =0; i < n; i++){
-
-
-
+    cin>>n>>m>>k>>x;
+    int f[n+1];
+    int grx = 0;
+    f[0] = 0;
+    for (int i =1; i < n+1; i++){
+        cin>>f[i];
+        if (f[i] < x)
+            grx++;
     }
+    sort(f,f+n+1);
+    for(grx--)
+        if
+
+
 
 
 
