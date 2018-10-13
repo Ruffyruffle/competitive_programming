@@ -8,10 +8,15 @@ struct line{
 };
 
 int main(){
-
+    vector<line>;
     vector<pair<int,int> > po;
     int n,a,b;
     for(int i = 0; i<n; i++){
         cin>>a>>b; po.push_back({a,b});
+    }
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            line.push_back(new line());
+        }
     }
 }
