@@ -14,6 +14,7 @@ const int INF = 0x3f3f3f3f;
 using namespace std;
 int n;
 int dp[MAXN][MAXN];
+int ps[MAXN];
 int a[MAXN];
 int mx;
 
@@ -50,13 +51,34 @@ int Sum(int l, int r){
 }
 int solve(int l, int r){
     if (l==r){
-        dp=[l][r] = true;
+        dp[l][r] = true;
     }
     else if (r-l < 3){
-        if(Sum(i,i) == Sum(j,j)){
-            dp[i][j] = true;
+        if(a[l] == a[r]){
+            dp[l][r] = true;
         }
     }
+    int a = 0, b = 0;
+    while(true){
+        if(Sum(l,l+a) == Sum(r-b, r)){
+            if(solve(l, l+a) && solve(r-b,r) && solve(l+a+1, r-b-1)){
+                dp[l][r] = true;
+                break;
+            }
+        }
+        else if (Sum(l,l+a) > Sum(r-b, r)){
+            b++;
+        }
+        else{ a++; }
+
+        if (l+a == r-b){
+            dp[l][r] = false;
+            break;
+        }
+    }
+
+
+    return dp[l][r];
 
 
 }
@@ -67,6 +89,7 @@ int main(){
     for (int i =1; i <= n; i++){
         cin>>a[i];
         a[i] = a[i-1] + a[i];
+        ps[i] = ps[i-1] + a[i];
     }
 
     MEM(dp, -1);
