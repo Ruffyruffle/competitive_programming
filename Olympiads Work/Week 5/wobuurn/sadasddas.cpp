@@ -12,29 +12,32 @@ typedef long double ld;
 const int INF = 0x3f3f3f3f;
 #define MAXN 1000000
 using namespace std;
-int n,m;
-vector<pair<int, pair<int, int> > > a;
-struct subset{
-    int par, rk;
-};
+int n;
+vector<string> a;
+void solve(string p, int l){
+    if(l == 0){
+        a.pb(p);
+        return;
+    }
 
-vector<subset> s;
+    for(int i = 1; i <= 26; i++){
+        char c = char(i+96);
+        string s = p + c;
+        solve(s,l-1);
+    }
+}
+
+
 
 int main(){
     cin.sync_with_stdio(0);
     cin.tie(0);
-    cin>>n>>m;
-    for (int i =0,x,y,z; i < m; i++){
-        cin>>x>>y>>z;
-        a.pb({i,{x,y}});
+    cin>>n;
+    for(int i = 1; i <= 3;i++ ){
+        solve("", i);
     }
     for(int i = 0; i < n; i++){
-        s.pb(i);
-    }
-    sort(a.begin(), a.end());
-    int e, se;
-    while(e < m-1){
-        e++;
+        cout<<a[i]<< " ";
     }
 
 
