@@ -33,6 +33,7 @@ void construct(int l, int r, int pos){
         seg[pos] = a[l];
         gcd[pos] = a[l];
         cou[pos] = 1;
+        cout<<l<<" "<<r<<" "<<gcd[pos]<<endl;
         return;
     }
     int mid = (l+r) / 2;
@@ -43,6 +44,7 @@ void construct(int l, int r, int pos){
 
     seg[pos] = min(seg[2*pos+1], seg[2*pos+2]);
     gcd[pos] = Ggcd(gcd[2*pos+1], gcd[2*pos+2]);
+    cout<<l<<" "<<r<<" "<<gcd[pos]<<endl;
     cou[pos] = (gcd[pos] == gcd[2*pos+1] ? cou[2*pos+1] : 0) + (gcd[pos] == gcd[2*pos+2] ? cou[2*pos+2] : 0);
 
 }
@@ -94,7 +96,7 @@ int rangecount(int ql, int qr, int l, int r, int pos){
     }
     int mid = (l+r) / 2;
     int gc = rangegcd(ql,qr, l, r, pos);
-    int cou = (gc == rangegcd(ql,qr,l,mid,2*pos+1) ? rangecount(ql,qr,l,mid,2*pos+1) : 0 )+( (rangegcd(ql,qr,mid+1,r,2*pos+2)) ? rangecount(ql,qr,l,mid,2*pos+2) : 0);
+    int cou = (gc == rangegcd(ql,qr,l,mid,2*pos+1) ? rangecount(ql,qr,l,mid,2*pos+1) : 0)+( (rangegcd(ql,qr,mid+1,r,2*pos+2)) ? rangecount(ql,qr,l,mid,2*pos+2) : 0);
 }
 
 int main(){
@@ -104,26 +106,25 @@ int main(){
     }
     w--;
     construct(0,w,0);
-//    for(int i = 0; i < 20; i++){
+//    for(int i = 0; i < 15; i++){
 //        cout<<seg[i] << endl;
 //    }
     char c; int x,y;
-    for(int i = 0; i < m; i++){
-        cin>>c>>x>>y;
-        if(c == 'C'){
-            update(0,w,0,x,y);
-        }
-        else if(c == 'M'){
-            cout<<rangemin(x,y, 0, w, 0)<<endl;
-        }
-        else if (c == 'G'){
-            cout<<rangegcd(x,y, 0, w, 0)<<endl;
-        }
-        else if(c == 'Q'){
-            cout<<rangecount(x,y, 0, w, 0)<<endl;
-        }
 
-    }
-
-
+//    for(int i = 0; i < m; i++){
+//        cin>>c>>x>>y;
+//        if(c == 'C'){
+//            update(0,w,0,x,y);
+//        }
+//        else if(c == 'M'){
+//            cout<<rangemin(x,y, 0, w, 0)<<endl;
+//        }
+//        else if (c == 'G'){
+//            cout<<rangegcd(x,y, 0, w, 0)<<endl;
+//        }
+//        else if(c == 'Q'){
+//            cout<<rangecount(x,y, 0, w, 0)<<endl;
+//        }
+//
+//    }
 }
