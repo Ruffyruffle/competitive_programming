@@ -8,114 +8,97 @@
 #define pb push_back
 typedef long long ll;
 typedef long double ld;
+typedef std::pair<double, double> pii;
 
 const int INF = 0x3f3f3f3f;
-#define MAXN 101
+#define MAXN 1000000
 using namespace std;
 int n;
-vector<vector<int>> p;
-vector<pair<int, int> >a[MAXN];
-vector<int> ans[MAXN][MAXN];
-bool visited[MAXN];
+vector<pii> a;
+double b=0,c=0;
+vector<int> xx,yy;
 
-void findPaths(int cur, int des, int *path, int &pi, int dist){
-    visited[cur] = true; path[pi] = dist; pi++;
-    if(cur == des){
-        vector<int> t(path, path+pi);
-        p.pb(t);
-        for(int i = 0; i < pi; i++){
-            cout<<path[i] << " ";
-        }
-        cout<<endl;
-    }
-    else{
-        for(int i = 0; i < a[cur].size(); i++){
-            if(!visited[a[cur][i].first])
-                findPaths[a[cur][i].first, des, visited, path, pi, a[cur][i].second];
-        }
-    }
-    pi--; visited[cur] = false;
-}
-
-int solve(int i){
-    int ans = INF;
-    for(int j = 0; j <p.size(); j++){
-        int lo = INF, hi = -1;
-        for(int k = 0; k < p[j].size(); k++){
-            if (p[j][k] < lo)
-                lo = p[j][k];
-            if(hi < p[j][k])
-                hi = p[j][k];
-        }
-
-        while(lo <= hi){
-            int mid = (lo+hi) / 2;
-            int r = 1, t = 0;
-            for(int i = 0; i < n; i++){
-                if (t + p[j][i] > mid){
-                    t = 0;
-                    r++;
-                }
-                t += p[j][i];
-            }
-            bool ff = (i >= r);
-            if(ff){
-                hi = mid-1;
-            }
-            else{
-                lo = mid+1;
-            }
-        }
-        ans = min(lo, ans);
-    }
-    if (ans == INF) ans = 0;
-    return ans;
-}
-
-vector<int> solveSegs(int start, int des){
-    p.clear();
-    int path[n];
-    MEM(path, 0);
-    int pi = 0;
-    MEM(visited, false);
-
-    findPaths(start, des, path, pi, 0);
-
-    vector<int> ans;
-    ans.pb(0);
-    for(int i = 1; i < n; i++){
-        ans.pb(solve(i));
+int calc(int x, int y){
+    int ans = 0,s;
+    for(int i = 0; i < n; i++){
+        s = max(abs(a[i].first-x),abs(a[i].second - y));
+        ans += s;
     }
     return ans;
-}
-
-void preComp(){
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= n; j++){
-            ans[i][j] = solveSegs(i,j);
-        }
-    }
 }
 
 int main(){
+    cin.sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
     cin>>n;
-    int x, q;
-    for (int i =1; i <= n; i++){
-        for(int j = 1; j <= n; j++){
-            cin>>x;
-            if(x!='0'){
-                a[i].pb(make_pair(j,x));
-            }
+    for (int i =0,x,y; i < n; i++){
+        cin>>x>>y;
+        xx.pb(x); yy.pb(y); a.pb({x,y});
+        b+=x;c+=y;
+    }
+    sort(xx.begin(), xx.end());
+    sort(yy.begin(), yy.end());
+    int mx, my;
+    if(n%2 == 0){
+        mx = (xx[n/2] + xx[n/2 +1] )/2;
+        my = (yy[n/2] + yy[n/2 +1] )/2;
+    }
+    else {
+        mx = xx[n/2];
+        my = yy[n/2];
+    }
+    b/=n;c/=n;
+    int mn = -1, mi = INF, ans = INF;
+    for(int i = 0; i < n; i++){
+        if(abs(mx-xx[i]) + abs(my-yy[i]) < mi){
+            mi = abs(mx-a[i].first) + abs(my-a[i].second);
+            mn = i;
         }
     }
-    preComp();
-    cin>>q;
-    int s,t,d;
-    for(int i = 0; i < q; i++){
-        cin>>s>>t>>d;
-        cout<<ans[s][t][d];
+
+    ans = min(ans, calc(mx,my)); ans = min(ans, calc(b,c));
+
+    for(int i = 0; i < n; i++){
+        ans = min(calc(a[i].first, a[i].second), ans);
     }
 
+    for(int i = -5; i <=5; i++){
+        for(int j = -5; j <=5; j++){
+            ans = min(ans, calc(mx+i, my + j));
+        }
+    }
+
+    int ans2 = INF, y;
+    int t,t2;
+    for(int k = 0; k < 10000; k++){
+        for(int j = 0; j < 10000; j++){
+            for(int i = 0,x; i < n; i++){
+                x= max(abs(a[i].first-k),abs(a[i].second - j));
+                y += x;
+            }
+            if(ans2 > y){
+                ans2 = min(ans2,y);
+                t = k; t2 = j;
+            }
+            y = 0;
+        }
+    }
+    cout<<ans<<" " << ans2;
+
+
+/*
+10
+3289 5983
+2595 250
+4 1
+5 2
+7 3
+4910 9987
+2818 4928
+4295 2094
+2490 5209
+6359 2094
+*/
 
 
 
