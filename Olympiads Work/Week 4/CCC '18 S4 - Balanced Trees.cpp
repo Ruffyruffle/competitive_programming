@@ -13,6 +13,7 @@
 #define exists(s, e) (s.find(e)!=s.end())
 #define WHILE(n)
 #define pb push_back
+#define scan(x) do{while((x=getchar())<'0'); for(x-='0'; '0'<=(_=getchar()); x=(x<<3)+(x<<1)+_-'0');}while(0)
 typedef long long ll;
 typedef long double ld;
 
@@ -23,26 +24,20 @@ int n;
 unordered_map<int, ll> dp;
 
 ll solve(int n){
-    if (n==1||n==2) return 1;
     if (dp[n]) return dp[n];
-    ll ans = n-n/2;
-    int j = n/3;
-    for(int i = n/2; i >=2; i= n/i - n/(i-1)){
-        j = n/(n/(i+1));
-        ans+= (i-j) * solve(n/i);
+    if (n<3) {return dp[n] = 1;}
+    ll ans = 0;
+    int a = sqrt(n);
+    for(int i = 1; i <= a;i++){
+        ans+=solve(i)*(n/i - n/(i + 1));
+        if(i>1 && n/i > a)
+            ans+= solve(n/i);
     }
-    dp[n] = ans;
-    return ans;
+    return dp[n]=ans;
 }
 int main(){
+    cin.sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
     cin>>n;
     cout<<solve(n);
 }
-//ll fun(int n){
-//    if(n==1||n==2) return 1;
-//    if(dp[n]) return dp[n];
-//    int x = n/2, i = 2, j = n/3; ll ret = n - x;
-//    for(; x>=2; x=j, i=n/x, j=n/(i+1))
-//        ret+=(x-j)*fun(i);
-//    return dp[n] = ret;
-//}
