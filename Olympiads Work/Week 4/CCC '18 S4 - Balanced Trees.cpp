@@ -27,8 +27,8 @@ ll solve(int n){
     if (dp[n]) return dp[n];
     ll ans = n-n/2;
     int j = n/3;
-    for(int i = n/2; i >=2; i= n/i - n/(i-1)){
-        j = n/(n/(i+1));
+    for(int i = n/2; i >=2; i = n/i - n/(i-1)){
+        j = n/i - (n/(i+1));
         ans+= (i-j) * solve(n/i);
     }
     dp[n] = ans;
@@ -38,11 +38,18 @@ int main(){
     cin>>n;
     cout<<solve(n);
 }
-//ll fun(int n){
-//    if(n==1||n==2) return 1;
-//    if(dp[n]) return dp[n];
-//    int x = n/2, i = 2, j = n/3; ll ret = n - x;
-//    for(; x>=2; x=j, i=n/x, j=n/(i+1))
-//        ret+=(x-j)*fun(i);
-//    return dp[n] = ret;
-//}
+
+
+
+ll fun(int n){
+    if(n==1||n==2) return 1;
+    if(dp[n]) return dp[n];
+    int x = n/2, i = 2, j = n/3; ll ret = n - x;
+    for(; x>=2; x=j, i=n/x, j=n/(i+1))
+        ret+=(x-j)*fun(i);
+    return dp[n] = ret;
+}
+
+
+
+

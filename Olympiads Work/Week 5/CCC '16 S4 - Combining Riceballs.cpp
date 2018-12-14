@@ -18,83 +18,24 @@ int a[MAXN];
 int ps[MAXN];
 int mx;
 
-//int solve(int l, int r){
-//    if(dp[l][r] != -1) return dp[l][r];
-//    if (l == r) return 1;
-//    int p = l+1, k = r-1;
-//    for(int i = 0; i < r-l; i++){
-//        if (l == r || abs(l-r) == 1){
-//            if (a[p] - a[l] == a[r] - a[k] && dp[p][l] && dp[k][r]){
-//                if (a[r] - a[l] > mx) mx = a[r] - a[l];
-//                dp[l][r] = 1;
-//                return 1;
-//                }
-//            else {
-//                dp[l][r] = 0;
-//                return 0;
-//            }
-//        if (a[p] + a[l] > a[r] - a[k]){
-//            k--;
-//            solve(l+p, r-k);
-//        }
-//        else{
-//            p++;
-//            solve(l+p, r-k);
-//        }
-//    }
-//    }
-//}
-
 int Sum(int l, int r){
-    l--;r--;
-    if (l == r) return a[l];
-    return ps[r] - ps[l];
+    return ps[r] - ps[l-1];
 }
 int solve(int l, int r){
-    cout<<l<< " " << r<< endl;
-    if(dp[l][r]!= -1) return dp[l][r];
-    if(l==r) {
-        dp[l][r] = 1;
-        return 1;
-    }
-    if(l+1 == r) {
-        dp[l][r] = (a[l] == a[r])? 1 : 0;
-        return dp[l][r];
-    }
+    //cout<<l<< " " << r<< endl;
+    if(r>l) return 0;
+    if(dp[l][r]) return dp[l][r];
+    if(r-l == 0) return dp[l][r] = 1;
+    if(r-l == 1) return (a[l]==a[r] ? dp[l][r] = 1 : 0);
+    if(r-l == 2 && a[l]==a[r]) return dp[l][r] = 1;
 
-    int p = 1, k = 1;
-
-    if (a[l] == a[r]){
-        if (solve(l+1, r-1)){
-                dp[l][r] = 1;
-                return 1;
+    int ll = l, rr = r;
+    for(int l2 = ll; l2 <= rr; l2++){
+        for(int r2 = rr; r2 >= ll; r2++){
+            if(r2>l2) continue;
+            if(ll==)
         }
     }
-
-    cout<<Sum(l, l+p);
-    while(l+p != r-k){
-        if (Sum(l, l+p) == Sum(r-k, r)){
-            if (solve(l,l+p) == 1 && solve(r,r-k) == 1){
-                if (solve(l+p, r-k)){
-                dp[l][r] = 1;
-                return 1;
-                }
-            }
-
-        }
-        if(solve(l,l+p) == 1 && solve(r,r-k) == 1){
-            if (solve(l+p, r-k)){
-                dp[l][r] = 1;
-                return 1;
-            }
-        }
-        else if (Sum(l, l+p) > Sum(r-k, r))
-            p++;
-        else
-            k++;
-    }
-    dp[l][r] = 0;
-    return 0;
 }
 
 
