@@ -22,8 +22,9 @@ using namespace std;
 vector<pii> a[MAXN];
 //vector<int> b[MAXN];
 bool done[MAXN];
-int sz[MAXN],n,q,lvl[MAXN], par[MAXN], root;
-ll d[20][MAXN];
+int sz[MAXN], par[MAXN], root;
+char lvl[MAXN];
+ll d[19][MAXN];
 ll ans[MAXN];
 stack<int> changed;
 void dfs(int cur, int last){
@@ -37,7 +38,7 @@ void dfs(int cur, int last){
 int Cen(int cur, int last, int tot){
     for(pii i : a[cur]){
         if(i.f == last || done[i.f]) continue;
-        if(sz[i.f]*2 > tot){
+        if(sz[i.f]<<1 > tot){
             return Cen(i.f, cur, tot);
         }
     }
@@ -51,7 +52,7 @@ int Cen(int cur){
     return cen;
 }
 
-void minDis(int cur, int last, ll dis, int lvl){
+void minDis(int cur, int last, ll dis, char lvl){
     d[lvl][cur] = min(d[lvl][cur], dis);
     for(pii i : a[cur]){
         if(i.f==last||done[i.f]) continue;
@@ -59,7 +60,7 @@ void minDis(int cur, int last, ll dis, int lvl){
     }
 }
 
-int decomp(int rt, int lv){
+int decomp(int rt, char lv){
     int cen = Cen(rt);
     lvl[cen] = lv;
     minDis(cen,-1,0,lv);
@@ -81,7 +82,7 @@ int decomp(int rt, int lv){
 */
 
 void Init(int N, int A[], int B[], int D[]){
-    MEM(d, INF);
+    MEM(d,INF);
     MEM(ans, INF);
     for(int i = 0; i < N-1; i++){
         a[A[i]].pb({B[i],D[i]});
@@ -92,20 +93,20 @@ void Init(int N, int A[], int B[], int D[]){
 }
 long long Query(int S, int X[], int T, int Y[]){
     for(int k = 0; k < S; k++){
-        int i = X[k];
-        int cur = i;
+        int cur = X[k];
         while(cur!=-1){
             changed.push(cur);
-            ans[cur] = min(ans[cur],d[lvl[cur]][i]);
+            ans[cur] = min(ans[cur],d[lvl[cur]][X[k]]);
             cur = par[cur];
         }
     }
+
     ll ret = INF;
     for(int k = 0; k < T; k++){
-        int i = Y[k];
-        int cur = i;
-        while(cur!=1){
-            ret = min(ret, ans[cur] + d[lvl[cur]][i]);
+        int cur = Y[k];
+        while(cur!=-1){
+            ret = min(ret, ans[cur] + d[lvl[cur]][Y[k]]);
+            //cout<<cur<<endl;
             cur = par[cur];
         }
     }
@@ -113,34 +114,41 @@ long long Query(int S, int X[], int T, int Y[]){
         ans[changed.top()] = INF;
         changed.pop();
     }
+    //cout<<endl;
     return ret;
 }
 
 int main(){
     cin.sync_with_stdio(0);
-    cin.tie(0);
-    int n,q;
-    cin>>n>>q;
-    int a[n], b[n],d2[n];
-    for(int i = 0; i < n-1;i++){
-        cin>>a[i]>>b[i]>>d2[i];
-    }
-    Init(n,a,b,d2);
-//    for(int i = 0; i < n; i++){
-//        cout<<lvl[i]<<endl;
+    cin.tie(0); cout.tie(0);
+//    int n,q;
+//    cin>>n>>q;
+//    int a[n], b[n],d2[n];
+//    for(int i = 0; i < n-1;i++){
+//        cin>>a[i]>>b[i]>>d2[i];
 //    }
-    int s,t;
-    for(int i = 0; i < q; i++){
-        cin>>s>>t;
-        int x[s], y[t];
-        for(int j = 0; j < s; j++){
-            cin>>x[j];
-        }
-        for(int j = 0; j < t; j++){
-            cin>>y[j];
-        }
-        cout<<Query(s,x,t,y)<<endl;
-    }
+//    Init(n,a,b,d2);
+////    for(int i = 0; i < n; i++){
+////        cout<<lvl[i]<<endl;
+////    }
+////    while(1){
+////        int x,y;
+////        cin>>x>>y;
+////        cout<<d[x][y]<<endl;
+////    }
+//
+//    int s,t;
+//    for(int i = 0; i < q; i++){
+//        cin>>s>>t;
+//        int x[s], y[t];
+//        for(int j = 0; j < s; j++){
+//            cin>>x[j];
+//        }
+//        for(int j = 0; j < t; j++){
+//            cin>>y[j];
+//        }
+//        cout<<Query(s,x,t,y)<<endl;
+//    }
 
 
 }

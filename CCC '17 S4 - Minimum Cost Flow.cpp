@@ -13,6 +13,8 @@
 #define WHILE(n)
 #define pii pair<int,int>
 #define pb push_back
+#define f first
+#define s second
 #define scan(x) do{while((x=getchar())<'0'); for(x-='0'; '0'<=(_=getchar()); x=(x<<3)+(x<<1)+_-'0');}while(0)
 char _;
 typedef long long ll;
@@ -52,6 +54,8 @@ void onion(int a, int b){
 }
 
 int main(){
+    cin.sync_with_stdio(0);
+    cin.tie(0);
     cin>>n>>m>>d;
     rk.resize(n+1);
     par.resize(n+1);
@@ -63,25 +67,45 @@ int main(){
         //cout<<i;
     }
     sort(a.begin(), a.end());
-
+    vector<pair<pii,pii>> c;
     int ans = 0, big = 0;
     for(pair<pii,pii> i : a){
         if(fnd(i.second.second) != fnd(i.second.first)){
             rev[i.first.second] = true;
             big = max(big, i.first.first);
             onion(i.second.first, i.second.second);
+            c.pb(i);
             if(!old[i.first.second]) ans++;
         }
     }
 
     create();
-    if(d==0){
-        cout<<ans;
-        return 0;
-    }
-    for(pair<pii,pii> i : a){
-        if(old[i.first.second]){
-            onion
+    vector<pair<pii,pii>> b;
+    if(d >= big){
+//        for(pair<pii,pii> i : a){
+//            if(fnd(i.second.first) != fnd(i.second.second)){
+//               if(i.first.first < big || (i.first.first == big && rev[i.first.second]))
+//                    onion(i.second.first, i.second.second);
+//               }
+//               else if (i.first.first <= d && old[i.first.second]){
+//                ans--; break;
+//               }
+//        }
+        for(int i = m-1; i >= 0; i++){
+            if(d >= a[i].f.f && rev[a[i].f.s]){
+                b.pb(a[i]);
+            }
+            else{
+                break;
+            }
+        }
+        for(pair<pii,pii> i : b){
+            for(pair<pii,pii> j : c){
+                if(i.f.s!=j.f.s && i.s.s == j.s.s && i.s.f == j.s.f){
+                    cout<<ans-1;
+                    return 0;
+                }
+            }
         }
     }
 
