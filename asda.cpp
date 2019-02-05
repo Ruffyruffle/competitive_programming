@@ -88,10 +88,10 @@ int main(){
     for(int i = 0; i < n; i++){
         if(mark[i] > 0){
             cnt++;
-            cout<<i<<endl;
+            //cout<<i<<endl;
         }
     }
-    cout<<ans<<" " <<cnt<<endl;
+    //cout<<ans<<" " <<cnt<<endl;
     cout<< ans + (cnt - ans) * 2 - 1;
 
 }

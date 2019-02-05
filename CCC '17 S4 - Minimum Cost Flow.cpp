@@ -78,33 +78,13 @@ int main(){
             if(!old[i.first.second]) ans++;
         }
     }
-
-    create();
-    vector<pair<pii,pii>> b;
-    if(d >= big){
-//        for(pair<pii,pii> i : a){
-//            if(fnd(i.second.first) != fnd(i.second.second)){
-//               if(i.first.first < big || (i.first.first == big && rev[i.first.second]))
-//                    onion(i.second.first, i.second.second);
-//               }
-//               else if (i.first.first <= d && old[i.first.second]){
-//                ans--; break;
-//               }
-//        }
-        for(int i = m-1; i >= 0; i++){
-            if(d >= a[i].f.f && rev[a[i].f.s]){
-                b.pb(a[i]);
-            }
-            else{
-                break;
-            }
-        }
-        for(pair<pii,pii> i : b){
-            for(pair<pii,pii> j : c){
-                if(i.f.s!=j.f.s && i.s.s == j.s.s && i.s.f == j.s.f){
-                    cout<<ans-1;
-                    return 0;
-                }
+//
+//    create();
+//    vector<pair<pii,pii>> b;
+    if(d > 0){
+        for(auto i : a){
+            if((d >= i.f.f || i.f.f == big) && old[i.f.s] && !rev[i.f.s]){
+                cout<<ans-1; return 0;
             }
         }
     }

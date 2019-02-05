@@ -16,35 +16,32 @@ typedef long double ld;
 typedef std::pair<int, int> pii;
 typedef std::pair<int, pii> piii;
 
-const ll INF = 0x3f3f3f3f;
-#define MAXN 401
+const int INF = 0x3f3f3f3f;
+#define MAXN 3001
 using namespace std;
-ll n,m,ans;
-ll dp[MAXN][MAXN], psa[MAXN];
-vector<ll> a; bool b[MAXN];
+int n,m,ans;
+ll dp[MAXN][MAXN],a[MAXN];;
+
 int main(){
     cin.sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
-    MEM(dp,INF);
-    cin>>n; a.pb(0);
-    for (int i =1,x; i <= n; i++){
-        cin>>x;
-        a.pb(x);
-        psa[i] = psa[i-1] + x;
+    cin>>n;
+    for (int i =1; i <= n; i++){
+        cin>>a[i];
     }
-    for(int i = 1; i <= n; i++){
-        dp[i][i] = 0;
-    }
-    for(int i = 1; i <= n; i++){
+    //cout<<a[1]<<endl;
+    for(int i = 0; i <= n; i++){
         for(int j = 1; j+i <= n; j++){
-            for(int k = j; k < i+j; k++){
-                dp[j][i+j] = min(dp[j][i+j], dp[j][k] + dp[k+1][i+j] + psa[i+j] - psa[j-1]);
-                //cout<<j<<" "<<k<<" "<<i+j<<endl;
-                //cout<<psa[j-1]<<endl;
+            //if(i!=1 && j!= 1 && i+j!= n) continue;
+            if((n+i)%2==1){
+                dp[j][i+j] = max(dp[j][i+j-1] + a[i+j], dp[j+1][i+j] + a[j]);
             }
+            else{
+                dp[j][i+j] = min(dp[j][i+j-1] - a[i+j], dp[j+1][i+j] - a[j]);
+            }
+            //cout<<j<<" "<<i+j<<" "<<dp[j][i+j]<<endl;
         }
     }
-
     cout<<dp[1][n];
 
 
