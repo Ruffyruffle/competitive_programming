@@ -17,7 +17,7 @@ typedef std::pair<int, int> pii;
 typedef std::pair<pii, pii> piii;
 
 const int INF = 0x3f3f3f3f;
-#define MAXN 100002
+#define MAXN 500002
 using namespace std;
 int n,m,ans;
 vector<string> a[MAXN],b[MAXN];
@@ -106,7 +106,5 @@ int main(){
 //        cout<<i.f<<" "<<i.s.s.s<<" "<<i.s.s.f<<endl;
 //    }
     cout<<ans;
-
-
 
 }

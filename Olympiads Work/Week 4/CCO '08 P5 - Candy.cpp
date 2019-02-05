@@ -23,35 +23,20 @@ int n,m,ans=INF;
 vector<int> a;
 bool solve(int cur){
 
-//    int ex = a[n-1] + cur*2 -MAXN, st=0;
-//    if(ex >= 0){
-//        for(int i = 0; i < n; i++){
-//            if(a[i]>ex) {st=i;break;}
-//        }
-//    }
-
-    int last = 0,t=0;
-    for(int i = 0; i < n; i++){
-        if(last<a[i]){
-            t++;
-            last = a[i]+(cur*2);
-        }
-    }
-    int ex = last-MAXN, st = 0;
+    int ex = a[n-1] + cur*2 -MAXN, st=0;
     if(ex >= 0){
-        for(int i = 0; i < n; i++){
-            if(a[i]>ex) {st = i; break;}
-
+        for(int i = 0; i < n-1; i++){
+            if(a[i]>ex) {st=i;break;}
         }
     }
-    last = 0,t=0;
+
+    int last = -1,t=0;
     for(int i = st; i < n; i++){
         if(last<a[i]){
             t++;
             last = a[i]+(cur*2);
         }
     }
-
 //    int d = 0;
 //    while(a[d] < a[0] + 2*cur && d < n){
 //        d++;
@@ -81,13 +66,14 @@ int main(){
     while(r>=l){
         mid = (l+r)/2;
         if(solve(mid)){
+            ans = mid;
             //cout<<mid<<endl;
             r = mid-1;
         }else{
             l=mid+1;
         }
     }
-    cout<<l;
+    cout<<ans;
 
 
 

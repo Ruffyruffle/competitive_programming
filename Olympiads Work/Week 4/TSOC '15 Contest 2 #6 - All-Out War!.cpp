@@ -18,23 +18,23 @@ typedef std::pair<int, pii> piii;
 const int INF = 0x3f3f3f3f;
 #define MAXN 30001
 using namespace std;
-int n,m,ans, mn[2*MAXN], lz[MAXN];
+ll n,m,ans, mn[2*MAXN], lz[MAXN];
 int h;
 
-void apply(int i, int v){
+inline void apply(int i, int v){
     mn[i]+=v;
-    if(n>i) lz[i] = v;
+    if(n>i) lz[i] += v;
 }
 
-void build(){
+inline void build(){
   for (int i = n - 1; i > 0; i--) mn[i] = min(mn[i<<1], mn[i<<1|1]);
 }
 
-void pushup(int i){
+inline void pushup(int i){
     while(i>1) i>>=1, mn[i] = min(mn[i<<1], mn[i<<1|1])+lz[i];
 }
 
-void pushdown(int n){
+inline void pushdown(int n){
     for(int s = h; s > 0; s--){
         int i = n>>s;
         if(lz[i]){
@@ -45,7 +45,7 @@ void pushdown(int n){
     }
 }
 
-void rinc(int l, int r, int v){
+inline void rinc(int l, int r, int v){
     l+=n, r+=n;
     int l2=l, r2=r;
     for(;l<r; l>>=1,r>>=1){
@@ -54,10 +54,10 @@ void rinc(int l, int r, int v){
     }
     pushup(l2); pushup(r2-1);
 }
-int rquery(int l, int r){
+ll rquery(int l, int r){
     l+=n,r+=n;
     pushdown(l); pushdown(r-1);
-    int ans = INF;
+    ll ans = INF;
     for(;l<r;l>>=1,r>>=1){
         if(l&1) ans = min(ans, mn[l++]);
         if(r&1) ans = min(ans, mn[--r]);
@@ -84,6 +84,6 @@ int main(){
         cin>>l>>r>>x;
         l--;
         rinc(l,r,-x);
-        cout<<max(0,rquery(l,r))<<" "<<max(rquery(0,n-1), 0)<<endl;
+        cout<<max(0ll,rquery(l,r))<<" "<<max(rquery(0,n), 0ll)<<endl;
     }
 }
