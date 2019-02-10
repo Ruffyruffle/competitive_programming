@@ -17,34 +17,29 @@ typedef std::pair<int, int> pii;
 typedef std::pair<int, pii> piii;
 
 const int INF = 0x3f3f3f3f;
-#define MAXN 101
+#define MAXN 1000000
 using namespace std;
-int n,k,ans;
-int dp[MAXN][100001],a[MAXN];
-int mod = 1000000007, sum[100001];
+int n,m,ans;
+vector<pii> a;
+
+bool cmp(pii a, pii b){
+    if(b.f == a.f){
+        return a.s > b.s;
+    }
+    else return a.f < b.f;
+}
 
 int main(){
     cin.sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
-    cin>>n>>k;
-    for (int i =1; i <= n; i++){
-        cin>>a[i];
-        dp[i][0] = 1;//sum[i][0] = 1;
+    cin>>n;
+    for (int i =0,x,y; i < n; i++){
+        cin>>x>>y; a.pb({x,y});
     }
-    dp[0][0] = 1;//sum[0][0] = 1;
-    for(int i = 1; i<= n; i++){
-        for(int j = 0; j<=k; j++){
-            sum[j] = sum[j-1] + dp[i-1][j];
-            sum[j]%=mod;
-            //cout<<sum[i-1][j]<<endl;
-        }
-        for(int j = 1; j <= k; j++){
-            dp[i][j] = sum[j] - (j-a[i]-1>=0?sum[j-a[i]-1]:0);
-            dp[i][j]%=mod;
-            //sum[i][j] = sum[i][j-1] +dp[i][j];
-        }
+    sort(a.begin(),a.end());
+    for(int i = 0; i < n; i++){
+
     }
-    cout<<dp[n][k];
 
 
 

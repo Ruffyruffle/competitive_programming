@@ -16,11 +16,11 @@ typedef long double ld;
 typedef std::pair<int, int> pii;
 typedef std::pair<int, pii> piii;
 
-const int INF = 0x3f3f3f3f;
-#define MAXN 101
+const ll INF = 0x3f3f3f3f3f3f3f3f;
+#define MAXN 105
 using namespace std;
 int n,m,ans;
-int d[MAXN][MAXN];
+ll d[MAXN][MAXN][MAXN];
 
 int main(){
     MEM(d,INF);
@@ -31,18 +31,47 @@ int main(){
         for(int j = 0; j < n; j++){
             cin>>x;
             if(x!=0){
-                d[i][j] = x;
-                d[j][i] = x;
+                d[1][i][j] = x;
+                //d[1][j][i] = x;
             }
         }
-        d[i][i] = 0;
+        d[1][i][i] = 0;
     }
     for(int i = 0; i < n; i++){
         for(int j = 0; j < n; j++){
             for(int k = 0; k < n; k++){
-                d[j][k] = min(d[j][i] + d[i][k], d[j][k]);
+                d[1][j][k] = min(d[1][j][i] + d[1][i][k], d[1][j][k]);
             }
         }
+    }
+    for(int l = 2; l <= n; l++){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                for(int k = 0; k < n; k++){
+                    //if(i==j || i==k) continue;
+                    d[l][j][k] = min(max(d[l-1][j][i], d[1][i][k]),
+                                     d[l][j][k]);
+                }
+            }
+        }
+    }
+//    cout<<endl;
+//    for(int i = 1; i <= n; i++){
+//        for(int j = 0; j < n; j++){
+//            for(int k = 0; k < n; k++){
+//                cout<<d[i][j][k]<<" ";
+//            }
+//            cout<<endl;
+//        }
+//        cout<<endl;
+//    }
+
+
+        int x,y,z,q;
+    cin>>q;
+    while(q--){
+        cin>>x>>y>>z;
+        cout<<(d[z][x-1][y-1] == INF?0:d[z][x-1][y-1])<<endl;
     }
 
 
