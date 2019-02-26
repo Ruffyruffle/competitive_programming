@@ -64,7 +64,19 @@ int main(){
         cin>>x>>y;
         cout<<query(x-1,y)<<endl;
     }
-
-
-
 }
+
+void sieve(int n){
+    for(int i=1;i*i<=n;i++){
+        if(!p[i]){
+            for(int j=i*i; j<=n; j+=i)
+                p[j]=1;
+        }
+    }
+    for(int i=2; i<=n; i++){
+        if(!p[i]) //
+    }
+}
+
+
+
