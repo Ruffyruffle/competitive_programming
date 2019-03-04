@@ -11,7 +11,7 @@ long long n,m,k,ans;
 vector<long long> a;
 long long mx[2*MAXN];
 //long long dp[MAXN][101];
-unordered_map<int,int> dp;
+unordered_map<long long,long long> dp;
 void build(){
     for(long long i = n-1; i > 0; --i) mx[i] = max(mx[i<<1], mx[i<<1|1]);
 
@@ -33,18 +33,20 @@ long long query(long long l, long long r){
     return hi;
 }
 
+//int c=0;
 long long solve(long long sum, long long cur, long long cs, long long free, long long mx){
+    //c++;
     //if((mx-cs) * k > n-cur || cs > mx) return 0;
     //cout<<sum<<" "<<cur<<" "<<free<<endl;
     if(cur >= n) return sum;
-    if(dp[cur][free]) return dp[cur][free];
+    if(dp[cur*(mx+1) + free] > sum) return dp[cur*(mx+1) + free];
     long long ret = 0;
     for(long long i = max(0ll,k-free); i <=k; i++){
         long long tt = k-i;
         //cout<<cur<<" "<<i<<endl;
         ret = max(ret, solve(sum + query(cur, cur + i), cur+i, cs+1, free-tt ,mx));
     }
-    return ret;
+    return dp[cur*(mx+1) + free] = ret;
 }
 
 int main(){
