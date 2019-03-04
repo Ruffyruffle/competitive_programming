@@ -37,6 +37,7 @@ void dfs(int cur, int last){
 
 void solve(int cur, int last, int d, int len){
     ans[d] = min(ans[d], len);
+    cout<<cur<<" "<<d<<endl;
     changed.push(d);
     for(pii i : a[cur]){
         if(i.f == last || done[i.f] || d+i.s > k) continue;
@@ -46,6 +47,7 @@ void solve(int cur, int last, int d, int len){
 
 void solve2(int cur, int last, int d, int len){
     //cout<<k-(d)<<" "<<ans[k-(d)] + len<<endl;
+    cout<<cur<<" "<<d<<endl;
     ans2 = min(ans2, ans[k-(d)] + len);
     for(pii i : a[cur]){
         if(i.f == last || done[i.f] || d+i.s > k) continue;
@@ -68,10 +70,10 @@ int Cen(int cur, int last, int tot){
 
 void decomp(int rt){
     ans[0] = 0;
-    //cout<<rt<<endl;
     dfs(rt, -1);
     if(sz[rt] == 1) return;
     int cen = Cen(rt, -1, sz[rt]);
+    cout<<cen<<endl;
     done[cen] = 1;
     solve(a[cen][0].f,-1,a[cen][0].s,1); solve2(a[cen][1].f,-1,a[cen][1].s,1);
     ans2 = min(ans2, ans[k]);
