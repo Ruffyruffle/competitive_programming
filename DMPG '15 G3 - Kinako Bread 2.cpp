@@ -128,29 +128,30 @@ void decomp(int rt){
 
             sort(kinako.begin(),kinako.end());
             //sort(p.begin(),p.end());
+            vector<pii> ki2 = kinako;
             int l=0,r=0;
             for(int j = kinako.size()-1; j>=0; j--){
                 if(ki) kinako[j].f--;
                 else kinako[j].s--;
 
-                cout<<l<<" "<<r<<endl;
+                //cout<<l<<" "<<r<<endl;
                 //cout<<p[r-1].f + kinako[j].f<<endl;
-                while(r < kinako.size() && kinako[r].f + kinako[j].f <= rk){
-                    add(kinako[r++].s+1,1);
+                while(r < kinako.size() && ki2[r].f + kinako[j].f <= rk){
+                    add(ki2[r++].s+1,1);
                 }
-                while(l < kinako.size() && kinako[l].f + kinako[j].f < lk){
-                    add(kinako[l++].s+1,-1);
+                while(l < kinako.size() && ki2[l].f + kinako[j].f < lk){
+                    add(ki2[l++].s+1,-1);
                 }
                 //cout<<p[l-1].f <<" "<<p[r-1].f<<endl;
                 //cout<<l<<" "<<r<<" "<<p.size()<<endl;
-                if(r>l) ans-= sum(rc - kinako[j].s + 1) - sum(lc-kinako[j].s);
-                if(ki>=lk&&rk>=ki&&cr>=lc&&rc>=cr) ans++; ////////////////////////////////*2. ans--;'
+                if(r>l) ans-= (sum(rc - kinako[j].s + 1) - sum(lc-kinako[j].s));
+                //if((kinako[j].f<<1)>=lk&&rk>=(kinako[j].f<<1)&&(kinako[j].s<<1)>=lc&&rc>=(kinako[j].s<<1)) ans--; ////////////////////////////////*2. ans--;'
 
                 if(ki) kinako[j].f++;
                 else kinako[j].s++;
             }
             while(r>l){
-                add(kinako[l++].s+1,-1);
+                add(ki2[l++].s+1,-1);
             }
 
 
@@ -159,18 +160,26 @@ void decomp(int rt){
             }
 
     }
+    /*
+    3 1 1 0 100
+    CKC
+    1 2
+    2 3
+    */
     int l=0,r=0;
     sort(p.begin(),p.end());
+    vector<pii> p2 = p;
+    cout<<p.size()<<endl;
     for(int j = p.size()-1; j>=0; j--){
         if(ki) p[j].f--;
         else p[j].s--;
 
         //cout<<p[r-1].f + kinako[j].f<<endl;
-        while(r < p.size() && p[r].f +p[j].f <= rk){
-            add(p[r++].s+1,1);
+        while(r < p.size() && p2[r].f +p[j].f <= rk){
+            add(p2[r++].s+1,1);
         }
-        while(l < p.size() && p[l].f + p[j].f < lk){
-            add(p[l++].s+1,-1);
+        while(l < p.size() && p2[l].f + p[j].f < lk){
+            add(p2[l++].s+1,-1);
         }
         //cout<<l<<" "<<r<<endl;
         //cout<<p[l-1].f <<" "<<p[r-1].f<<endl;
@@ -181,7 +190,7 @@ void decomp(int rt){
         else p[j].s++;
     }
     while(r>l){
-        add(p[l++].s+1,-1);
+        add(p2[l++].s+1,-1);
     }
 
     for(int &i : a[cen]){
