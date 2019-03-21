@@ -34,7 +34,7 @@ void build(){
 void update(int i, int v){
     int t=i,tt=i;
     for(gc[t+=n]=v; t>1; t>>=1) gc[t>>1] = __gcd(gc[t], gc[t^1]);
-    for(co[tt+=n]; tt>1; tt>>=1) co[tt>>1] = (gc[tt>>1]==gc[tt]?co[tt]:0) +
+    for(co[tt+=n]=1; tt>1; tt>>=1) co[tt>>1] = (gc[tt>>1]==gc[tt]?co[tt]:0) +
                                                 (gc[tt>>1]==gc[tt^1]?co[tt^1]:0);
     for(mn[i+=n]=v; i>1; i>>=1) mn[i>>1] = min(mn[i], mn[i^1]);
 }
@@ -56,7 +56,8 @@ int queryb(int l, int r){
   return ret;
 }
 int queryc(int l, int r){
-    int ret = 0, gcd = querya(l,r);
+    int gcd = querya(l,r);
+    int ret = 0;
     for (l += n, r += n; l < r; l >>= 1, r >>= 1){
         if (l&1) ret += (gcd==gc[l]?co[l++]:0);
         if (r&1) ret += (gcd==gc[--r]?co[r]:0);
@@ -86,6 +87,7 @@ int main(){
             update(x-1,y);
         }
     }
+    //cout<<(1|1)<<endl;
 
 
 
