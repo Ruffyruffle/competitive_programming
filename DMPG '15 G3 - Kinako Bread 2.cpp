@@ -102,7 +102,7 @@ void solve(int cur, int last, int ki=0, int cr=0){
 //}
 //
 
-
+ll ans2=0;
 void decomp(int rt){
     dfs(rt,-1); tot = sz[rt];
     int cen = centroid(rt, -1);
@@ -125,39 +125,30 @@ void decomp(int rt){
         // if(i!=0) solve2(a[cen][i], -1, ki, cr, ki);
         kinako.clear();
         solve(a[cen][i], -1, ki, cr);
-
-            sort(kinako.begin(),kinako.end());
-            //sort(p.begin(),p.end());
-            vector<pii> ki2 = kinako;
-            int l=0,r=0;
-            for(int j = kinako.size()-1; j>=0; j--){
-                if(ki) kinako[j].f--;
-                else kinako[j].s--;
-
-                //cout<<l<<" "<<r<<endl;
-                //cout<<p[r-1].f + kinako[j].f<<endl;
-                while(r < kinako.size() && ki2[r].f + kinako[j].f <= rk){
-                    add(ki2[r++].s+1,1);
-                }
-                while(l < kinako.size() && ki2[l].f + kinako[j].f < lk){
-                    add(ki2[l++].s+1,-1);
-                }
-                //cout<<p[l-1].f <<" "<<p[r-1].f<<endl;
-                //cout<<l<<" "<<r<<" "<<p.size()<<endl;
-                if(r>l) ans-= (sum(rc - kinako[j].s + 1) - sum(lc-kinako[j].s));
-                //if((kinako[j].f<<1)>=lk&&rk>=(kinako[j].f<<1)&&(kinako[j].s<<1)>=lc&&rc>=(kinako[j].s<<1)) ans--; ////////////////////////////////*2. ans--;'
-
-                if(ki) kinako[j].f++;
-                else kinako[j].s++;
+        sort(kinako.begin(),kinako.end());
+        //sort(p.begin(),p.end());
+        int l=0,r=0;
+        for(int j = kinako.size()-1; j>=0; j--){
+            //cout<<l<<" "<<r<<endl;
+            //cout<<p[r-1].f + kinako[j].f<<endl;
+            while(r < kinako.size() && kinako[r].f + kinako[j].f - ki <= rk){
+                add(kinako[r++].s+1,1);
             }
-            while(r>l){
-                add(ki2[l++].s+1,-1);
+            while(l < kinako.size() && kinako[l].f + kinako[j].f - ki < lk){
+                add(kinako[l++].s+1,-1);
             }
+            //cout<<p[l-1].f <<" "<<p[r-1].f<<endl;
+            //cout<<l<<" "<<r<<" "<<p.size()<<endl;
+            ans2-= sum(rc - (kinako[j].s - cr) + 1) - sum(lc-(kinako[j].s - cr));
+            //if((kinako[j].f<<1)>=lk&&rk>=(kinako[j].f<<1)&&(kinako[j].s<<1)>=lc&&rc>=(kinako[j].s<<1)) ans--; ////////////////////////////////*2. ans--;'
+        }
+        while(r>l){
+            add(kinako[l++].s+1,-1);
+        }
 
-
-            for(pii &j : kinako){
-                p.pb(j);
-            }
+        for(pii &j : kinako){
+            p.pb(j);
+        }
 
     }
     /*
@@ -168,29 +159,22 @@ void decomp(int rt){
     */
     int l=0,r=0;
     sort(p.begin(),p.end());
-    vector<pii> p2 = p;
-    cout<<p.size()<<endl;
+    //cout<<p.size()<<endl;
     for(int j = p.size()-1; j>=0; j--){
-        if(ki) p[j].f--;
-        else p[j].s--;
-
         //cout<<p[r-1].f + kinako[j].f<<endl;
-        while(r < p.size() && p2[r].f +p[j].f <= rk){
-            add(p2[r++].s+1,1);
+        while(r < p.size() && p[r].f + (p[j].f - ki) <= rk){
+            add(p[r++].s+1,1);
         }
-        while(l < p.size() && p2[l].f + p[j].f < lk){
-            add(p2[l++].s+1,-1);
+        while(l < p.size() && p[l].f + (p[j].f - ki) < lk){
+            add(p[l++].s+1,-1);
         }
         //cout<<l<<" "<<r<<endl;
         //cout<<p[l-1].f <<" "<<p[r-1].f<<endl;
         //cout<<l<<" "<<r<<" "<<p.size()<<endl;
-        if(r>l) ans+= sum(rc - p[j].s + 1) - sum(lc-p[j].s);
-
-        if(ki) p[j].f++;
-        else p[j].s++;
+        ans2+= sum(rc - (p[j].s - cr) + 1) - sum(lc-(p[j].s - cr));
     }
     while(r>l){
-        add(p2[l++].s+1,-1);
+        add(p[l++].s+1,-1);
     }
 
     for(int &i : a[cen]){
@@ -200,8 +184,8 @@ void decomp(int rt){
 
 
 int main(){
-    //cin.sync_with_stdio(0);
-    //cin.tie(0); cout.tie(0);
+    cin.sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
     cin>>n>>lk>>rk>>lc>>rc;
     cin>>t; int x,y;
     for (int i =0; i < n-1; i++){
@@ -209,5 +193,5 @@ int main(){
         a[x].pb(y); a[y].pb(x);
     }
     decomp(0);
-    cout<<ans;
+    cout<<ans + (ans2>>1);
 }
