@@ -37,19 +37,20 @@ int main(){
     }
     MEM(dp,INF);
     dp[0][0] = dp[0][1] = 0;
-    cout<<endl;
+    last[0][0] = last[0][1] = 1;
     for(int i = 1; i <= n; i++){
         for(int j=0; j < 2; j++){
-                if(dp[i][0] > a[i].s - a[i].f + abs(last[i-1][j] - a[i].f) + dp[i-1][j]){
-                    dp[i][0] = a[i].s - a[i].f + abs(last[i-1][j] - a[i].f) + dp[i-1][j];
+                if(dp[i][0] > a[i].s - a[i].f + abs(last[i-1][j] - a[i].s) + dp[i-1][j]){
+                    dp[i][0] = a[i].s - a[i].f + abs(last[i-1][j] - a[i].s) + dp[i-1][j];
                     last[i][0] = a[i].f;
                 }
-                if(dp[i][1] > a[i].s - a[i].f + abs(last[i-1][j] - a[i].s) + dp[i-1][j]){
-                    dp[i][1] = a[i].s - a[i].f + abs(last[i-1][j] - a[i].s) + dp[i-1][j];
+                //cout<<a[i].s-a[i].f<<" "<<abs(last[i-1][j] - a[i].f)<<endl;
+                if(dp[i][1] > a[i].s - a[i].f + abs(last[i-1][j] - a[i].f) + dp[i-1][j]){
+                    dp[i][1] = a[i].s - a[i].f + abs(last[i-1][j] - a[i].f) + dp[i-1][j];
                     last[i][1] = a[i].s;
                 }
         }
-        cout<<dp[i][0]<<" "<<dp[i][1]<<endl;;
+        //cout<<dp[i][0]<<" "<<dp[i][1]<<endl;;
     }
     cout<<min(dp[n][0] + abs(last[n][0] - n),dp[n][1] + abs(last[n][1] - n))  + n-1;
 
